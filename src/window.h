@@ -3,11 +3,12 @@
 
 #include <QMainWindow>
 #include <file.h>
+#include <detect.h>
 #include <QFileDialog>
 #include <QStringListModel>
 #include <QtWidgets>
 #include <thread>
-#include <iostream>
+#include <opencv2/opencv.hpp>
 
 namespace Ui {
 class Window;
@@ -25,6 +26,10 @@ private:
     Ui::Window *ui;
     void SetQlabelBorder();
     void Display_Image(QString img_path);
+    void Set_Plate_Pixmap(std::vector<QPixmap> plate_chars);
+    void Clear_Label();
+    void Set_Chars_LineEdit(std::vector<char> plate_chars);
+    void Clear_LineEdit();
 
 private slots:
     void on_actionAbrir_4_triggered();

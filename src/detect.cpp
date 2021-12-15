@@ -25,6 +25,7 @@ std::vector<Char> Detect::Detect_Plate(cv::Mat img){
 
     image sized;
 
+
     if(net->w == im.w && net->h == im.h){
         sized = make_image(im.w, im.h, im.c);
         memcpy(sized.data, im.data, im.w * im.h * im.c * sizeof(float));
@@ -45,29 +46,31 @@ std::vector<Char> Detect::Detect_Plate(cv::Mat img){
     do_nms_obj(detections, boxes, l.classes, static_cast<float>(0.45));
 
     std::vector<Char> plate;
+    std::vector<Char> plate_crop;
 
     for (int i=0; i< boxes; i++) {
         int _class = -1;
         for (int j = 0; j < l.classes; j++) {
-            if(detections[i].prob[j] > 0.5) if(_class < 0) _class = j;
+            if(detections[i].prob[j] > 0.1) if(_class < 0) _class = j;
         }
         if(_class >= 0){
             box b = detections[i].bbox;
-            int left = (b.x - b.w / 2.) * im.w;
-            int right = (b.x + b.w / 2.) * im.w;
-            int top = (b.y - b.h / 2.) * im.h;
-            int botton = (b.y + b.h / 2.) * im.h;
 
-            left < 0 ? left = 0 : left;
-            right > im.w - 1 ? right = im.w - 1 : right;
-            top < 0 ? top = 0 : top;
-            botton > im.h - 1 ? botton = im.h - 1 : botton;
+            int x = (b.x - b.w / 2.) * im.w;
+            int w = (b.x + b.w / 2.) * im.w;
+            int y = (b.y - b.h / 2.) * im.h;
+            int h = (b.y + b.h / 2.) * im.h;
+
+            x < 0 ? x = 0 : x;
+            w > im.w - 1 ? w = im.w - 1 : w;
+            y < 0 ? y = 0 : y;
+            h > im.h - 1 ? h = im.h - 1 : h;
 
             Char chr;
-            chr.x = left;
-            chr.y = top;
-            chr.width = right + 1;
-            chr.height = botton + 1;
+            chr.x = x;
+            chr.y = y;
+            chr.width = w + 1;
+            chr.height = h + 1;
             chr.classe = _class;
 
             plate.push_back(chr);
@@ -82,7 +85,6 @@ std::vector<Char> Detect::Detect_Plate(cv::Mat img){
 
     return plate;
 }
-
 bool Detect::Compare_By_Length(const Char &a, const Char &b){
     return a.x < b.x;
 }

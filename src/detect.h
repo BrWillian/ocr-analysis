@@ -19,15 +19,13 @@ typedef struct{
     float height;
 }Char;
 
-
 class Detect
 {
 public:
-
     static std::vector<Char> Detect_Plate(cv::Mat img);
     static void Init_Detection_Model(const char* cfg_path, const char* weight_path);
 private:
-    static inline network *net;
+    static network *net;
     static bool Compare_By_Length(const Char &a, const Char &b);
     static bool Compare_By_Height(const Char &a, const Char &b);
     static bool Is_Motorcycle(int cols, int rows);

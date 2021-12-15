@@ -8,6 +8,7 @@
 #include <QStringListModel>
 #include <QtWidgets>
 #include <thread>
+#include <annotation.h>
 #include <opencv2/opencv.hpp>
 
 namespace Ui {

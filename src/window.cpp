@@ -71,12 +71,15 @@ void Window::Display_Image(QString img_path){
 
     const char classes[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
+    // Detect plate and construct annotation
     auto chars = Detect::Detect_Plate(img_plate);
 
     if(chars.size() > 6){
+        //Annotation::img_shape = std::make_pair(img.width(), img.height());
+        //Annotation::plate = chars;
+        //Annotation::Get_Pos_Crop(&chars);
 
         for(auto it=chars.begin(); it< chars.end(); it++){
-
             cv::Rect roi(cv::Point(it->x, it->y), cv::Point(it->width, it->height));
             cv::Mat img_plate_roi = img_plate(roi);
 
@@ -151,6 +154,7 @@ void Window::keyPressEvent(QKeyEvent *event){
     if(!File::list_of_imgs.empty()){
         std::string img_path;
         if(event->key() == Qt::Key_Right){
+            Annotation::Build_Annotation(File::list_of_imgs.at(File::npos));
             File::npos += 1;
             try {
                 Display_Image(QString::fromStdString(File::list_of_imgs.at(File::npos)));
@@ -160,6 +164,7 @@ void Window::keyPressEvent(QKeyEvent *event){
         }
         if(event->key() == Qt::Key_Left){
             if(File::npos >= 0){
+                Annotation::Build_Annotation(File::list_of_imgs.at(File::npos));
                 File::npos -= 1;
             }
             try {

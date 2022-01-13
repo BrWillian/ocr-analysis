@@ -15,7 +15,7 @@ void File::List_Directory(std::string path){
 
     foreach(const QFileInfo& fi, dir.entryList())
     {
-        if(!QFileInfo::exists(QString::fromStdString(path)+QDir::separator()+fi.completeBaseName()+".txt")){
+        if(!QFileInfo::exists(QString::fromStdString(path)+"/"+fi.completeBaseName()+".txt")){
             QString strtmp = QString::fromStdString(path)+"/"+fi.fileName();
             list_of_imgs.push_back(strtmp.toStdString());
         }

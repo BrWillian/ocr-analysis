@@ -16,7 +16,7 @@ void Annotation::Build_Annotation(std::string filename){
 
         filename = Remove_Stem(filename);
 
-        outfile.open(filename+".txt", std::ios_base::app);
+        outfile.open(filename+".txt", std::ios_base::out);
 
         if(outfile.is_open() && outfile.good()){
             for(auto &it: plate){
@@ -24,7 +24,6 @@ void Annotation::Build_Annotation(std::string filename){
             }
             outfile.close();
         }
-        plate.clear();
     }
 }
 std::string Annotation::Remove_Stem(std::string str)
@@ -37,20 +36,23 @@ std::string Annotation::Remove_Stem(std::string str)
     return str;
 }
 void Annotation::Get_Pos_Crop(std::vector<Char>* plate){
+
+    const int width = img_shape.first;
+    const int height = img_shape.second;
     for(auto &p: *plate){
-        int x = (p.x - p.width / 2.) * img_shape.first;
-        int w = (p.x + p.width / 2.) * img_shape.first;
-        int y = (p.y - p.height / 2.) * img_shape.second;
-        int h = (p.y + p.height / 2.) * img_shape.second;
+        int x = (p.x - p.width / 2.) * width;
+        int w = (p.x + p.width / 2.) * width;
+        int y = (p.y - p.height / 2.) * height;
+        int h = (p.y + p.height / 2.) * height;
 
         x < 0 ? x = 0 : x;
-        w > img_shape.first - 1 ? w = img_shape.first - 1 : w;
+        w > width - 1 ? w = width - 1 : w;
         y < 0 ? y = 0 : y;
-        h > img_shape.second - 1 ? h = img_shape.second - 1 : h;
+        h > height - 1 ? h = height - 1 : h;
 
         p.x = x;
         p.y = y;
-        p.width = w;
-        p.height = h;
+        p.width = w + 1;
+        p.height = h + 1;
     }
 }

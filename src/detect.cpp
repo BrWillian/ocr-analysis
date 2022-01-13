@@ -51,7 +51,7 @@ std::vector<Char> Detect::Detect_Plate(cv::Mat img){
     for (int i=0; i< boxes; i++) {
         int _class = -1;
         for (int j = 0; j < l.classes; j++) {
-            if(detections[i].prob[j] > 0.1) if(_class < 0) _class = j;
+            if(detections[i].prob[j] > 0.01) if(_class < 0) _class = j;
         }
         if(_class >= 0){
             box b = detections[i].bbox;
@@ -67,10 +67,10 @@ std::vector<Char> Detect::Detect_Plate(cv::Mat img){
             h > im.h - 1 ? h = im.h - 1 : h;
 
             Char chr;
-            chr.x = x;
-            chr.y = y;
-            chr.width = w + 1;
-            chr.height = h + 1;
+            chr.x = b.x;
+            chr.y = b.y;
+            chr.width = b.w;
+            chr.height = b.h;
             chr.classe = _class;
 
             plate.push_back(chr);

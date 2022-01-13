@@ -8,7 +8,7 @@ Window::Window(QWidget *parent) :
     ui->setupUi(this);
     SetQlabelBorder();
 
-    Detect::Init_Detection_Model("res/pr.cfg", "res/pr.weights");
+    Detect::Init_Detection_Model("./vzt.thd", "./vzt.dat");
 }
 
 Window::~Window()
@@ -50,7 +50,6 @@ void Window::on_actionAbrir_4_triggered(){
         File::npos = 0;
         QString strtmp = QString::fromStdString(File::list_of_imgs.at(File::npos));
         Display_Image(strtmp);
-        ui->label_8->setStyleSheet("background: transparent;");
         QModelIndex ind = ui->listView->model()->index(int(File::npos), 0);
         ui->listView->setCurrentIndex(ind);
         ui->listView->selectionModel()->select(ind, QItemSelectionModel::Select);
@@ -59,31 +58,37 @@ void Window::on_actionAbrir_4_triggered(){
 void Window::Display_Image(QString img_path){
     Clear_Label();
     Clear_LineEdit();
-    QPixmap img(img_path);
 
     std::vector<QPixmap> pix_maps_of_chars;
     std::vector<char> plate_chars_vector;
 
+    cv::Mat img_plate = cv::imread(img_path.toStdString());
+
+    cv::Mat temp;
+    cv::cvtColor(img_plate, temp, cv::COLOR_BGR2RGB);
+
+    QPixmap img = QPixmap::fromImage(QImage((uchar*) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888));
+
     ui->label_8->setAlignment(Qt::AlignCenter);
     ui->label_8->setPixmap(img.scaled(ui->label_8->width(), ui->label_8->height(), Qt::KeepAspectRatio));
-
-    cv::Mat img_plate = cv::imread(img_path.toStdString());
+    ui->label_8->setStyleSheet("border-radius: 5px; background: transparent;");
 
     const char classes[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
-    // Detect plate and construct annotation
     auto chars = Detect::Detect_Plate(img_plate);
 
     if(chars.size() > 6){
-        //Annotation::img_shape = std::make_pair(img.width(), img.height());
-        //Annotation::plate = chars;
-        //Annotation::Get_Pos_Crop(&chars);
+        Annotation::img_shape = std::make_pair(img.width(), img.height());
+        Annotation::plate = chars;
+        Annotation::Get_Pos_Crop(&chars);
 
         for(auto it=chars.begin(); it< chars.end(); it++){
             cv::Rect roi(cv::Point(it->x, it->y), cv::Point(it->width, it->height));
-            cv::Mat img_plate_roi = img_plate(roi);
+            cv::Mat img_plate_roi = img_plate(roi);           
 
-            QPixmap chr = QPixmap::fromImage(QImage((uchar*) img_plate_roi.data, img_plate_roi.cols, img_plate_roi.rows, img_plate_roi.step, QImage::Format_RGB888));
+            cv::Mat temp;
+            cv::cvtColor(img_plate_roi, temp, cv::COLOR_BGR2RGB);
+            QPixmap chr = QPixmap::fromImage(QImage((uchar*) temp.data, temp.cols, temp.rows, temp.step, QImage::Format_RGB888));
 
             pix_maps_of_chars.push_back(chr);
             plate_chars_vector.push_back(classes[it->classe]);
@@ -153,24 +158,33 @@ void Window::on_listView_doubleClicked(const QModelIndex &index)
 void Window::keyPressEvent(QKeyEvent *event){
     if(!File::list_of_imgs.empty()){
         std::string img_path;
-        if(event->key() == Qt::Key_Right){
-            Annotation::Build_Annotation(File::list_of_imgs.at(File::npos));
+        if(event->key() == Qt::Key_Right){          
+            if(Check_LineEdit()){
+                Annotation::Build_Annotation(File::list_of_imgs.at(File::npos));
+            }
             File::npos += 1;
             try {
-                Display_Image(QString::fromStdString(File::list_of_imgs.at(File::npos)));
+                img_path = File::list_of_imgs.at(File::npos);
+                Display_Image(QString::fromStdString(img_path));
             } catch (const std::out_of_range& err) {
-                std::cout<<err.what()<<std::endl;
+                File::npos = File::list_of_imgs.size()-1;
+                img_path =  File::list_of_imgs.at(File::npos);
+                QMessageBox::information(this, "Thundera .:. by Vizentec", "Você finalizou as imagens!");
             }
         }
         if(event->key() == Qt::Key_Left){
             if(File::npos >= 0){
-                Annotation::Build_Annotation(File::list_of_imgs.at(File::npos));
+                if(Check_LineEdit()){
+                    Annotation::Build_Annotation(File::list_of_imgs.at(File::npos));
+                }
                 File::npos -= 1;
             }
             try {
-                Display_Image(QString::fromStdString(File::list_of_imgs.at(File::npos)));
+                img_path = File::list_of_imgs.at(File::npos);
+                Display_Image(QString::fromStdString(img_path));
             } catch (const std::out_of_range& err) {
-                std::cout<<err.what()<<std::endl;
+                File::npos = 0;
+                img_path = File::list_of_imgs.at(File::npos);
             }
 
         }
@@ -180,3 +194,14 @@ void Window::keyPressEvent(QKeyEvent *event){
         ui->listView->selectionModel()->select(index, QItemSelectionModel::Select);
     }
 }
+bool Window::Check_LineEdit(){
+    if(ui->lineEdit->text().isEmpty() || ui->lineEdit_2->text().isEmpty() || ui->lineEdit_3->text().isEmpty() || ui->lineEdit_4->text().isEmpty() || ui->lineEdit_5->text().isEmpty() || ui->lineEdit_6->text().isEmpty())
+        return false;
+    return true;
+}
+
+void Window::on_pushButton_clicked()
+{
+    Clear_LineEdit();
+}
+

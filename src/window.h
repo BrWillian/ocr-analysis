@@ -31,11 +31,13 @@ private:
     void Clear_Label();
     void Set_Chars_LineEdit(std::vector<char> plate_chars);
     void Clear_LineEdit();
+    bool Check_LineEdit();
 
 private slots:
     void on_actionAbrir_4_triggered();
     void on_listView_doubleClicked(const QModelIndex &index);
     void keyPressEvent(QKeyEvent *event);
+    void on_pushButton_clicked();
 };
 
 #endif // WINDOW_H

@@ -12,8 +12,8 @@
 class Annotation
 {
 public:
-    static std::vector<Char> plate;
-    static std::pair<int, int> img_shape;
+    static inline std::vector<Char> plate;
+    static inline std::pair<int, int> img_shape;
     static void Build_Annotation(std::string filename);
     static void Get_Pos_Crop(std::vector<Char>* plate);
 private:

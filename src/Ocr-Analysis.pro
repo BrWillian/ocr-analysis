@@ -8,9 +8,13 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = Ocr-Analysis
+TARGET = Thundera
 TEMPLATE = app
-win32:RC_ICONS += "res/icon.png"
+
+QMAKE_CXXFLAGS_RELEASE = -MT -O2
+QMAKE_CFLAGS_RELEASE = -MT -O2
+
+RC_ICONS = "res/icon.ico"
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
@@ -24,6 +28,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 CONFIG += c++17
+INCLUDEPATH += C:\opencv\build\include \
+               C:\pthreads \
+               $$PWD/../../
 
 SOURCES += \
         main.cpp \
@@ -40,154 +47,61 @@ HEADERS += \
 
 FORMS += \
         window.ui
+        LIBS += $$PWD/libs/pthreadVC.lib
+        LIBS += $$PWD/libs/pthreadVC_x64.lib
+        LIBS += $$PWD/libs/pthreadVC2.lib
+        LIBS += $$PWD/libs/pthreadVCd.lib
+        LIBS += $$PWD/libs/pthreadVCd_x64.lib
+        LIBS += $$PWD/libs/darknet.lib
+        LIBS += $$PWD/libs/opencv_aruco450.lib
+        LIBS += $$PWD/libs/opencv_bgsegm450.lib
+        LIBS += $$PWD/libs/opencv_bioinspired450.lib
+        LIBS += $$PWD/libs/opencv_calib3d450.lib
+        LIBS += $$PWD/libs/opencv_ccalib450.lib
+        LIBS += $$PWD/libs/opencv_core450.lib
+        LIBS += $$PWD/libs/opencv_datasets450.lib
+        LIBS += $$PWD/libs/opencv_dnn450.lib
+        LIBS += $$PWD/libs/opencv_dnn_objdetect450.lib
+        LIBS += $$PWD/libs/opencv_dnn_superres450.lib
+        LIBS += $$PWD/libs/opencv_dpm450.lib
+        LIBS += $$PWD/libs/opencv_face450.lib
+        LIBS += $$PWD/libs/opencv_features2d450.lib
+        LIBS += $$PWD/libs/opencv_flann450.lib
+        LIBS += $$PWD/libs/opencv_fuzzy450.lib
+        LIBS += $$PWD/libs/opencv_gapi450.lib
+        LIBS += $$PWD/libs/opencv_hfs450.lib
+        LIBS += $$PWD/libs/opencv_highgui450.lib
+        LIBS += $$PWD/libs/opencv_imgcodecs450.lib
+        LIBS += $$PWD/libs/opencv_imgproc450.lib
+        LIBS += $$PWD/libs/opencv_img_hash450.lib
+        LIBS += $$PWD/libs/opencv_intensity_transform450.lib
+        LIBS += $$PWD/libs/opencv_line_descriptor450.lib
+        LIBS += $$PWD/libs/opencv_mcc450.lib
+        LIBS += $$PWD/libs/opencv_ml450.lib
+        LIBS += $$PWD/libs/opencv_objdetect450.lib
+        LIBS += $$PWD/libs/opencv_optflow450.lib
+        LIBS += $$PWD/libs/opencv_phase_unwrapping450.lib
+        LIBS += $$PWD/libs/opencv_photo450.lib
+        LIBS += $$PWD/libs/opencv_plot450.lib
+        LIBS += $$PWD/libs/opencv_quality450.lib
+        LIBS += $$PWD/libs/opencv_rapid450.lib
+        LIBS += $$PWD/libs/opencv_reg450.lib
+        LIBS += $$PWD/libs/opencv_rgbd450.lib
+        LIBS += $$PWD/libs/opencv_saliency450.lib
+        LIBS += $$PWD/libs/opencv_shape450.lib
+        LIBS += $$PWD/libs/opencv_stereo450.lib
+        LIBS += $$PWD/libs/opencv_stitching450.lib
+        LIBS += $$PWD/libs/opencv_structured_light450.lib
+        LIBS += $$PWD/libs/opencv_superres450.lib
+        LIBS += $$PWD/libs/opencv_surface_matching450.lib
+        LIBS += $$PWD/libs/opencv_text450.lib
+        LIBS += $$PWD/libs/opencv_tracking450.lib
+        LIBS += $$PWD/libs/opencv_ts450.lib
+        LIBS += $$PWD/libs/opencv_video450.lib
+        LIBS += $$PWD/libs/opencv_videoio450.lib
+        LIBS += $$PWD/libs/opencv_videostab450.lib
+        LIBS += $$PWD/libs/opencv_xfeatures2d450.lib
+        LIBS += $$PWD/libs/opencv_ximgproc450.lib
+        LIBS += $$PWD/libs/opencv_xobjdetect450.lib
+        LIBS += $$PWD/libs/opencv_xphoto450.lib
 
-LIBS += \
-        ./libdarknet.so \
-        /opt/opencv/build/lib/libade.a \
-        /opt/opencv/build/lib/libopencv_aruco.so \
-        /opt/opencv/build/lib/libopencv_aruco.so.4.5 \
-        /opt/opencv/build/lib/libopencv_aruco.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_bgsegm.so \
-        /opt/opencv/build/lib/libopencv_bgsegm.so.4.5 \
-        /opt/opencv/build/lib/libopencv_bgsegm.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_bioinspired.so \
-        /opt/opencv/build/lib/libopencv_bioinspired.so.4.5 \
-        /opt/opencv/build/lib/libopencv_bioinspired.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_calib3d.so \
-        /opt/opencv/build/lib/libopencv_calib3d.so.4.5 \
-        /opt/opencv/build/lib/libopencv_calib3d.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_ccalib.so \
-        /opt/opencv/build/lib/libopencv_ccalib.so.4.5 \
-        /opt/opencv/build/lib/libopencv_ccalib.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_core.so \
-        /opt/opencv/build/lib/libopencv_core.so.4.5 \
-        /opt/opencv/build/lib/libopencv_core.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_datasets.so \
-        /opt/opencv/build/lib/libopencv_datasets.so.4.5 \
-        /opt/opencv/build/lib/libopencv_datasets.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_dpm.so \
-        /opt/opencv/build/lib/libopencv_dpm.so.4.5 \
-        /opt/opencv/build/lib/libopencv_dpm.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_face.so \
-        /opt/opencv/build/lib/libopencv_face.so.4.5 \
-        /opt/opencv/build/lib/libopencv_face.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_features2d.so \
-        /opt/opencv/build/lib/libopencv_features2d.so.4.5 \
-        /opt/opencv/build/lib/libopencv_features2d.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_flann.so \
-        /opt/opencv/build/lib/libopencv_flann.so.4.5 \
-        /opt/opencv/build/lib/libopencv_flann.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_freetype.so \
-        /opt/opencv/build/lib/libopencv_freetype.so.4.5 \
-        /opt/opencv/build/lib/libopencv_freetype.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_fuzzy.so \
-        /opt/opencv/build/lib/libopencv_fuzzy.so.4.5 \
-        /opt/opencv/build/lib/libopencv_fuzzy.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_gapi.so \
-        /opt/opencv/build/lib/libopencv_gapi.so.4.5 \
-        /opt/opencv/build/lib/libopencv_gapi.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_hfs.so \
-        /opt/opencv/build/lib/libopencv_hfs.so.4.5 \
-        /opt/opencv/build/lib/libopencv_hfs.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_highgui.so \
-        /opt/opencv/build/lib/libopencv_highgui.so.4.5 \
-        /opt/opencv/build/lib/libopencv_highgui.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_imgcodecs.so \
-        /opt/opencv/build/lib/libopencv_imgcodecs.so.4.5 \
-        /opt/opencv/build/lib/libopencv_imgcodecs.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_img_hash.so \
-        /opt/opencv/build/lib/libopencv_img_hash.so.4.5 \
-        /opt/opencv/build/lib/libopencv_img_hash.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_imgproc.so \
-        /opt/opencv/build/lib/libopencv_imgproc.so.4.5 \
-        /opt/opencv/build/lib/libopencv_imgproc.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_intensity_transform.so \
-        /opt/opencv/build/lib/libopencv_intensity_transform.so.4.5 \
-        /opt/opencv/build/lib/libopencv_intensity_transform.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_line_descriptor.so \
-        /opt/opencv/build/lib/libopencv_line_descriptor.so.4.5 \
-        /opt/opencv/build/lib/libopencv_line_descriptor.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_ml.so \
-        /opt/opencv/build/lib/libopencv_ml.so.4.5 \
-        /opt/opencv/build/lib/libopencv_ml.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_objdetect.so \
-        /opt/opencv/build/lib/libopencv_objdetect.so.4.5 \
-        /opt/opencv/build/lib/libopencv_objdetect.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_optflow.so \
-        /opt/opencv/build/lib/libopencv_optflow.so.4.5 \
-        /opt/opencv/build/lib/libopencv_optflow.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_phase_unwrapping.so \
-        /opt/opencv/build/lib/libopencv_phase_unwrapping.so.4.5 \
-        /opt/opencv/build/lib/libopencv_phase_unwrapping.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_photo.so \
-        /opt/opencv/build/lib/libopencv_photo.so.4.5 \
-        /opt/opencv/build/lib/libopencv_photo.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_plot.so \
-        /opt/opencv/build/lib/libopencv_plot.so.4.5 \
-        /opt/opencv/build/lib/libopencv_plot.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_quality.so \
-        /opt/opencv/build/lib/libopencv_quality.so.4.5 \
-        /opt/opencv/build/lib/libopencv_quality.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_rapid.so \
-        /opt/opencv/build/lib/libopencv_rapid.so.4.5 \
-        /opt/opencv/build/lib/libopencv_rapid.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_reg.so \
-        /opt/opencv/build/lib/libopencv_reg.so.4.5 \
-        /opt/opencv/build/lib/libopencv_reg.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_rgbd.so \
-        /opt/opencv/build/lib/libopencv_rgbd.so.4.5 \
-        /opt/opencv/build/lib/libopencv_rgbd.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_saliency.so \
-        /opt/opencv/build/lib/libopencv_saliency.so.4.5 \
-        /opt/opencv/build/lib/libopencv_saliency.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_shape.so \
-        /opt/opencv/build/lib/libopencv_shape.so.4.5 \
-        /opt/opencv/build/lib/libopencv_shape.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_stereo.so \
-        /opt/opencv/build/lib/libopencv_stereo.so.4.5 \
-        /opt/opencv/build/lib/libopencv_stereo.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_stitching.so \
-        /opt/opencv/build/lib/libopencv_stitching.so.4.5 \
-        /opt/opencv/build/lib/libopencv_stitching.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_structured_light.so \
-        /opt/opencv/build/lib/libopencv_structured_light.so.4.5 \
-        /opt/opencv/build/lib/libopencv_structured_light.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_superres.so \
-        /opt/opencv/build/lib/libopencv_superres.so.4.5 \
-        /opt/opencv/build/lib/libopencv_superres.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_surface_matching.so \
-        /opt/opencv/build/lib/libopencv_surface_matching.so.4.5 \
-        /opt/opencv/build/lib/libopencv_surface_matching.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_tracking.so \
-        /opt/opencv/build/lib/libopencv_tracking.so.4.5 \
-        /opt/opencv/build/lib/libopencv_tracking.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_ts.a \
-        /opt/opencv/build/lib/libopencv_videoio.so \
-        /opt/opencv/build/lib/libopencv_videoio.so.4.5 \
-        /opt/opencv/build/lib/libopencv_videoio.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_video.so \
-        /opt/opencv/build/lib/libopencv_video.so.4.5 \
-        /opt/opencv/build/lib/libopencv_video.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_videostab.so \
-        /opt/opencv/build/lib/libopencv_videostab.so.4.5 \
-        /opt/opencv/build/lib/libopencv_videostab.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_xfeatures2d.so \
-        /opt/opencv/build/lib/libopencv_xfeatures2d.so.4.5 \
-        /opt/opencv/build/lib/libopencv_xfeatures2d.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_ximgproc.so \
-        /opt/opencv/build/lib/libopencv_ximgproc.so.4.5 \
-        /opt/opencv/build/lib/libopencv_ximgproc.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_xobjdetect.so \
-        /opt/opencv/build/lib/libopencv_xobjdetect.so.4.5 \
-        /opt/opencv/build/lib/libopencv_xobjdetect.so.4.5.1 \
-        /opt/opencv/build/lib/libopencv_xphoto.so \
-        /opt/opencv/build/lib/libopencv_xphoto.so.4.5 \
-        /opt/opencv/build/lib/libopencv_xphoto.so.4.5.1 \
-
-
-QMAKE_LFLAGS = -Wl,-rpath,./
-
-# Default rules for deployment.
-qnx: target.path = /tmp/$${TARGET}/bin
-else: unix:!android: target.path = /opt/$${TARGET}/bin
-!isEmpty(target.path): INSTALLS += target

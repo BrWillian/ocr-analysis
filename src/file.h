@@ -16,8 +16,8 @@ public:
     void List_Directory(std::string path);
 
     // Static Attributes
-    static std::vector<std::string> list_of_imgs;
-    static size_t npos;
+    static inline std::vector<std::string> list_of_imgs;
+    static inline size_t npos = 0;
 private:
 
 
